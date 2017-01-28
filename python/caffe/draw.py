@@ -10,16 +10,7 @@ Caffe network visualization: draw the NetParameter protobuffer.
 """
 
 from caffe.proto import caffe_pb2
-
-"""
-pydot is not supported under python 3 and pydot2 doesn't work properly.
-pydotplus works nicely (pip install pydotplus)
-"""
-try:
-    # Try to load pydotplus
-    import pydotplus as pydot
-except ImportError:
-    import pydot
+import pydot
 
 # Internal layer and blob styles.
 LAYER_STYLE_DEFAULT = {'shape': 'record',
@@ -49,7 +40,7 @@ def get_edge_label(layer):
 
     if layer.type == 'Data':
         edge_label = 'Batch ' + str(layer.data_param.batch_size)
-    elif layer.type == 'Convolution' or layer.type == 'Deconvolution':
+    elif layer.type == 'Convolution':
         edge_label = str(layer.convolution_param.num_output)
     elif layer.type == 'InnerProduct':
         edge_label = str(layer.inner_product_param.num_output)
@@ -83,7 +74,7 @@ def get_layer_label(layer, rankdir):
         # horizontal space is not; separate words with newlines
         separator = '\\n'
 
-    if layer.type == 'Convolution' or layer.type == 'Deconvolution':
+    if layer.type == 'Convolution':
         # Outer double quotes needed or else colon characters don't parse
         # properly
         node_label = '"%s%s(%s)%skernel size: %d%sstride: %d%spad: %d"' %\
@@ -91,11 +82,11 @@ def get_layer_label(layer, rankdir):
                       separator,
                       layer.type,
                       separator,
-                      layer.convolution_param.kernel_size[0] if len(layer.convolution_param.kernel_size._values) else 1,
+                      layer.convolution_param.kernel_size,
                       separator,
-                      layer.convolution_param.stride[0] if len(layer.convolution_param.stride._values) else 1,
+                      layer.convolution_param.stride,
                       separator,
-                      layer.convolution_param.pad[0] if len(layer.convolution_param.pad._values) else 0)
+                      layer.convolution_param.pad)
     elif layer.type == 'Pooling':
         pooling_types_dict = get_pooling_types_dict()
         node_label = '"%s%s(%s %s)%skernel size: %d%sstride: %d%spad: %d"' %\
@@ -118,7 +109,7 @@ def choose_color_by_layertype(layertype):
     """Define colors for nodes based on the layer type.
     """
     color = '#6495ED'  # Default
-    if layertype == 'Convolution' or layertype == 'Deconvolution':
+    if layertype == 'Convolution':
         color = '#FF5050'
     elif layertype == 'Pooling':
         color = '#FF9900'
