@@ -1,3 +1,6 @@
+#include <cmath>
+#include <cstdlib>
+#include <cstring>
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -5,7 +8,7 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
-#include "caffe/layers/multinomial_logistic_loss_layer.hpp"
+#include "caffe/vision_layers.hpp"
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"
@@ -13,7 +16,7 @@
 namespace caffe {
 
 template <typename Dtype>
-class MultinomialLogisticLossLayerTest : public CPUDeviceTest<Dtype> {
+class MultinomialLogisticLossLayerTest : public ::testing::Test {
  protected:
   MultinomialLogisticLossLayerTest()
       : blob_bottom_data_(new Blob<Dtype>(10, 5, 1, 1)),
@@ -48,6 +51,7 @@ TYPED_TEST_CASE(MultinomialLogisticLossLayerTest, TestDtypes);
 
 TYPED_TEST(MultinomialLogisticLossLayerTest, TestGradientCPU) {
   LayerParameter layer_param;
+  Caffe::set_mode(Caffe::CPU);
   MultinomialLogisticLossLayer<TypeParam> layer(layer_param);
   layer.SetUp(this->blob_bottom_vec_, this->blob_top_vec_);
   GradientChecker<TypeParam> checker(1e-2, 2*1e-2, 1701, 0, 0.05);

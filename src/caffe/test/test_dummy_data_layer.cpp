@@ -5,15 +5,15 @@
 
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
-#include "caffe/layers/dummy_data_layer.hpp"
 #include "caffe/proto/caffe.pb.h"
+#include "caffe/vision_layers.hpp"
 
 #include "caffe/test/test_caffe_main.hpp"
 
 namespace caffe {
 
 template <typename Dtype>
-class DummyDataLayerTest : public CPUDeviceTest<Dtype> {
+class DummyDataLayerTest : public ::testing::Test {
  protected:
   DummyDataLayerTest()
       : blob_top_a_(new Blob<Dtype>()),
@@ -44,6 +44,7 @@ class DummyDataLayerTest : public CPUDeviceTest<Dtype> {
 TYPED_TEST_CASE(DummyDataLayerTest, TestDtypes);
 
 TYPED_TEST(DummyDataLayerTest, TestOneTopConstant) {
+  Caffe::set_mode(Caffe::CPU);
   LayerParameter param;
   DummyDataParameter* dummy_data_param = param.mutable_dummy_data_param();
   dummy_data_param->add_num(5);
@@ -73,6 +74,7 @@ TYPED_TEST(DummyDataLayerTest, TestOneTopConstant) {
 }
 
 TYPED_TEST(DummyDataLayerTest, TestTwoTopConstant) {
+  Caffe::set_mode(Caffe::CPU);
   LayerParameter param;
   DummyDataParameter* dummy_data_param = param.mutable_dummy_data_param();
   dummy_data_param->add_num(5);
@@ -111,6 +113,7 @@ TYPED_TEST(DummyDataLayerTest, TestTwoTopConstant) {
 }
 
 TYPED_TEST(DummyDataLayerTest, TestThreeTopConstantGaussianConstant) {
+  Caffe::set_mode(Caffe::CPU);
   LayerParameter param;
   DummyDataParameter* dummy_data_param = param.mutable_dummy_data_param();
   dummy_data_param->add_num(5);

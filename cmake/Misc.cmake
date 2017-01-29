@@ -1,4 +1,4 @@
-# ---[ Configuration types
+# ---[ Configurations types
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Possible configurations" FORCE)
 mark_as_advanced(CMAKE_CONFIGURATION_TYPES)
 
@@ -32,11 +32,6 @@ endif()
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE CACHE BOOLEAN "Use link paths for shared library rpath")
 set(CMAKE_MACOSX_RPATH TRUE)
 
-list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES ${CMAKE_INSTALL_PREFIX}/lib __is_systtem_dir)
-if(${__is_systtem_dir} STREQUAL -1)
-  set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
-endif()
-
 # ---[ Funny target
 if(UNIX OR APPLE)
   add_custom_target(symlink_to_build COMMAND "ln" "-sf" "${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/build"
@@ -46,7 +41,7 @@ endif()
 # ---[ Set debug postfix
 set(Caffe_DEBUG_POSTFIX "-d")
 
-set(Caffe_POSTFIX "")
+set(CAffe_POSTFIX "")
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
-  set(Caffe_POSTFIX ${Caffe_DEBUG_POSTFIX})
+  set(CAffe_POSTFIX ${Caffe_DEBUG_POSTFIX})
 endif()

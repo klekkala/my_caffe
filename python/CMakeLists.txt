@@ -1,5 +1,5 @@
 if(NOT HAVE_PYTHON)
-  message(STATUS "Python interface is disabled or not all required dependencies found. Building without it...")
+  message(STATUS "Python interface is disabled or not all required dependecies found. Building without it...")
   return()
 endif()
 
@@ -18,17 +18,13 @@ if(UNIX OR APPLE)
                        COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_SOURCE_DIR}/python/caffe/proto
                        COMMAND touch ${PROJECT_SOURCE_DIR}/python/caffe/proto/__init__.py
                        COMMAND cp ${proto_gen_folder}/*.py ${PROJECT_SOURCE_DIR}/python/caffe/proto/
-                       COMMENT "Creating symlink ${__linkname} -> ${PROJECT_BINARY_DIR}/lib/_caffe${Caffe_POSTFIX}.so")
+                       COMMENT "Creating symlink ${__linkname} -> ${PROJECT_BINARY_DIR}/lib/_caffe${CAffe_POSTFIX}.so")
 endif()
 
 # ---[ Install
-file(GLOB files1 *.py requirements.txt)
-install(FILES ${files1} DESTINATION python)
-
-file(GLOB files2 caffe/*.py)
-install(FILES  ${files2} DESTINATION python/caffe)
-install(TARGETS pycaffe  DESTINATION python/caffe)
-install(DIRECTORY caffe/imagenet caffe/proto caffe/test DESTINATION python/caffe)
-
+file(GLOB files *.py requirements.txt)
+install(FILES  ${files} DESTINATION python)
+install(DIRECTORY caffe DESTINATION python)
+install(TARGETS pycaffe DESTINATION python/caffe)
 
 

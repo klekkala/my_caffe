@@ -1,7 +1,9 @@
 #ifdef USE_CUDNN
+#include <algorithm>
 #include <vector>
 
-#include "caffe/layers/cudnn_sigmoid_layer.hpp"
+#include "caffe/layer.hpp"
+#include "caffe/vision_layers.hpp"
 
 namespace caffe {
 
@@ -33,8 +35,8 @@ CuDNNSigmoidLayer<Dtype>::~CuDNNSigmoidLayer() {
   // Check that handles have been setup before destroying.
   if (!handles_setup_) { return; }
 
-  cudnnDestroyTensorDescriptor(this->bottom_desc_);
-  cudnnDestroyTensorDescriptor(this->top_desc_);
+  cudnnDestroyTensor4dDescriptor(this->bottom_desc_);
+  cudnnDestroyTensor4dDescriptor(this->top_desc_);
   cudnnDestroy(this->handle_);
 }
 
